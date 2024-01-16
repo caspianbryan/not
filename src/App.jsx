@@ -52,6 +52,19 @@ const App = () => {
       })
   }
 
+  const removeNote = (id) => {
+    noteService.remove(id).then(() => {
+      setNotes(notes.filter(note => note.id !== id))
+    }).catch(err => {
+      console.log(`Error removing note with id ${id}:`, err);
+      setErrorMessage(`Error removing note with id ${id}`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    })
+  }
+
+
   const handleNoteChange = (event) => {
     setNewNote(event.target.value)
   }
@@ -73,6 +86,7 @@ const App = () => {
             key={note.id}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
+            removeNote = {() => removeNote(note.id)}
           />
         )}
       </ul>
